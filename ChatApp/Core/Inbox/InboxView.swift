@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct InboxView: View {
+    let user: User
     @State private var showNewMessageView = false
-    @State private var user = User.MOCK_USER
     
     var body: some View {
         NavigationStack {
@@ -24,7 +24,8 @@ struct InboxView: View {
                  
             }
             .navigationDestination(for: User.self, destination: { user in
-                ProfileView()
+                ProfileView(user: user)
+                    .navigationBarBackButtonHidden()
             })
             .fullScreenCover(isPresented: $showNewMessageView, content: {
                 NewMessageView()
@@ -32,14 +33,14 @@ struct InboxView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     HStack {
-                        NavigationLink(value: user) {
+                        NavigationLink(value: user)
+                        {
                             Image(user.profileImageUrl ?? "")
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: 32, height: 32)
                                 .clipShape(Circle())
                         }
-                        
                         Text("Chats")
                             .font(.title)
                             .fontWeight(.semibold)
@@ -63,6 +64,6 @@ struct InboxView: View {
 
 struct InboxView_Previews: PreviewProvider {
     static var previews: some View {
-        InboxView()
+        InboxView(user: User.MOCK_USERS[0])
     }
 }

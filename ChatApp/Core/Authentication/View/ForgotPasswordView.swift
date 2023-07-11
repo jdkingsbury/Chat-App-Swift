@@ -10,7 +10,7 @@ import SwiftUI
 struct ForgotPasswordView: View {
     @State private var email = ""
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var viewModel: AuthViewModel
+    @EnvironmentObject var viewModel: AuthService
     
     var body: some View {
         VStack {

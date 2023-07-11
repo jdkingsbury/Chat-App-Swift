@@ -9,77 +9,93 @@ import SwiftUI
 import PhotosUI
 
 struct ProfileView: View {
-    @EnvironmentObject var viewModel: AuthViewModel
-    @StateObject var profileViewModel = ProfileViewModel()
+    @StateObject var viewModel: ProfileViewModel
+    @Environment(\.dismiss) var dismiss
+    
+    init(user: User) {
+        self._viewModel = StateObject(wrappedValue: ProfileViewModel(user: user))
+    }
     
     var body: some View {
-        if let user = viewModel.currentUser {
+        VStack {
+            // header
             VStack {
-                // header
-                VStack {
-                    Text(user.initials)
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                        .frame(width: 72, height: 72)
-                        .background(Color(.systemGray))
-                        .clipShape(Circle())
-                    
-    //                PhotosPickerItem(selection: $viewModel.selectedItem) {
-    //                    if let profileImage = viewModel.profileImage {
-    //                        profileImage
-    //                            .resizable()
-    //                            .scaledToFill()
-    //                            .frame(width: 80, height: 80)
-    //                            .clipShape(Circle())
-    //                    } else {
-    //                        Image(user.profileImageUrl ?? "")
-    //                            .resizable()
-    //                            .scaledToFill()
-    //                            .frame(width: 80, height: 80)
-    //                            .clipShape(Circle())
-    //                    }
-    //                }
-                    
-                    Text(user.fullname)
-                        .font(.title2)
-                        .fontWeight(.semibold)
+                
+                PhotosPicker(selection: $viewModel.selectedImage) {
+                    if let profileImage = viewModel.profileImage {
+                        profileImage
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 80, height: 80)
+                            .clipShape(Circle())
+                    } else {
+                        CircularProfileImageView(user: viewModel.user, size: .large)
+                    }
                 }
                 
-                // list
-                
-                List {
-                    Section {
-                        ForEach(SettingsOptionsViewModel.allCases) {option in
-                            HStack {
-                                Image(systemName: option.imageName)
-                                    .resizable()
-                                    .frame(width: 24, height: 24)
-                                    .foregroundColor(option.imageBackgroundColor)
-                                
-                                Text(option.title)
-                                    .font(.subheadline)
+                Text(viewModel.user.fullname)
+                    .font(.title2)
+                    .fontWeight(.semibold)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Image(systemName: "chevron.left")
+                        .imageScale(.large)
+                        .onTapGesture {
+                            Task {
+                                dismiss()
                             }
                         }
-                    }
-                    
-                    Section {
-                        Button("Log Out") {
-                            viewModel.signOut()
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        Task {
+                            try await viewModel.updateUserData()
+                            dismiss()
                         }
-                        Button("Delete Account") {
-                            
-                        }
+                    } label: {
+                        Text("Save")
+                            .font(.subheadline)
+                            .fontWeight(.bold)
                     }
-                    .foregroundColor(.red)
                 }
             }
+            
+            // list
+            
+            List {
+                Section {
+                    ForEach(SettingsOptionsViewModel.allCases) {option in
+                        HStack {
+                            Image(systemName: option.imageName)
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .foregroundColor(option.imageBackgroundColor)
+                            
+                            Text(option.title)
+                                .font(.subheadline)
+                        }
+                    }
+                }
+                
+                Section {
+                    Button("Sign Out") {
+                        AuthService.shared.signout()
+                    }
+                    Button("Delete Account") {
+                        
+                    }
+                }
+                .foregroundColor(.red)
+            }
+            
+            
         }
     }
 }
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileView()
+        ProfileView(user: User.MOCK_USERS[0])
     }
 }

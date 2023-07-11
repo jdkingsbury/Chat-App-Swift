@@ -6,49 +6,58 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct RegistrationView: View {
-    @State private var email = ""
-    @State private var password = ""
-    @State private var fullname = ""
-    @State private var confirmPassword = ""
+    @StateObject var viewModel = RegistrationViewModel()
+    
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var viewModel: AuthViewModel
     
     var body: some View {
         VStack {
-            
-            // image
-            Image("firebase-logo")
-                .resizable()
-                .scaledToFill()
-                .frame(width: 100, height: 120)
-                .padding(.vertical, 32)
+            Button {
+                
+            } label: {
+                VStack {
+                    Image(systemName: "person.circle.fill")
+                        .font(.system(size: 140))
+                        .padding()
+                        .foregroundColor(Color(.systemGray2))
+                }
+            }
+            .navigationViewStyle(StackNavigationViewStyle())
+//            .fullScreenCover(isPresented: $showImagePicker, onDismiss: nil) {
+//            }
             
             // form fields
             VStack(spacing: 10) {
-                InputView(text: $email,
+                InputView(text: $viewModel.email,
                           title: "Email Address",
                           placeholder: "name@example.com")
                 .autocapitalization(.none)
                 
-                InputView(text: $fullname,
-                          title: "full name",
+                InputView(text: $viewModel.username,
+                          title: "Username",
+                          placeholder: "username")
+                .autocapitalization(.none)
+                
+                InputView(text: $viewModel.fullname,
+                          title: "fullname",
                           placeholder: "Enter your name")
                 
-                InputView(text: $password,
+                InputView(text: $viewModel.password,
                           title: "Password",
                           placeholder: "Enter your password",
                           isSecureField: true)
                 
                 ZStack(alignment: .trailing) {
-                    InputView(text: $confirmPassword,
+                    InputView(text: $viewModel.confirmPassword,
                               title: "Confirm your password",
                               placeholder: "Confirm password",
                               isSecureField: true)
                     
-                    if !password.isEmpty && !confirmPassword.isEmpty {
-                        if password == confirmPassword {
+                    if !viewModel.password.isEmpty && !viewModel.confirmPassword.isEmpty {
+                        if viewModel.password == viewModel.confirmPassword {
                             Image(systemName: "checkmark.circle.fill")
                                 .imageScale(.large)
                                 .fontWeight(.bold)
@@ -68,9 +77,7 @@ struct RegistrationView: View {
             // sign up button
             Button {
                 Task {
-                    try await viewModel.createUser(withEmail: email,
-                                                   password: password,
-                                                   fullname: fullname)
+                    try await viewModel.createUser()
                 }
             } label: {
                 HStack(spacing: 3) {
@@ -108,13 +115,13 @@ struct RegistrationView: View {
 
 extension RegistrationView: AuthenticationFormProtocol {
     var formIsValid: Bool {
-        return !email.isEmpty
-        && email.contains("@")
-        && email.contains(".com")
-        && !password.isEmpty
-        && password.count > 5
-        && confirmPassword == password
-        && !fullname.isEmpty
+        return !viewModel.email.isEmpty
+        && viewModel.email.contains("@")
+        && viewModel.email.contains(".com")
+        && !viewModel.password.isEmpty
+        && viewModel.password.count > 5
+        && viewModel.confirmPassword == viewModel.password
+        && !viewModel.fullname.isEmpty
     }
 }
 
