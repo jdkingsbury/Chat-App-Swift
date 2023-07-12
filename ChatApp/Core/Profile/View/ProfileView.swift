@@ -29,7 +29,7 @@ struct ProfileView: View {
                             .frame(width: 80, height: 80)
                             .clipShape(Circle())
                     } else {
-                        CircularProfileImageView(user: viewModel.user, size: .large)
+                        CircularProfileImageView(user: viewModel.user, size: .xLarge)
                     }
                 }
                 

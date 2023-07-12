@@ -10,6 +10,7 @@ import SwiftUI
 struct NewMessageView: View {
     @State private var searchText = ""
     @Environment(\.dismiss) var dismiss
+    @ObservedObject var viewModel = NewMessageViewModel()
     
     var body: some View {
         NavigationStack {
@@ -25,27 +26,31 @@ struct NewMessageView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 
-                ForEach(0 ... 10, id: \.self) { user in
+                ForEach(viewModel.users) { user in
                     VStack {
-                        HStack {
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .frame(width: 32, height: 32)
-                                .foregroundColor(Color(.systemGray4))
-                            
-                            Text("Superman")
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
-                            
-                            Spacer()
+                        NavigationLink(value: user) {
+                            HStack {
+                                CircularProfileImageView(user: user, size: .small)
+                                
+                                Text(user.username)
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
+                                
+                                Spacer()
+                            }
+                            .foregroundColor(.black)
+                            .padding(.leading)
                         }
-                        .padding(.leading)
+                        
                         
                         Divider()
                             .padding(.leading, 40)
                     }
                 }
             }
+            .navigationDestination(for: User.self, destination: { user in
+                ChatView(user: user)
+            })
             .navigationTitle("New Message")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

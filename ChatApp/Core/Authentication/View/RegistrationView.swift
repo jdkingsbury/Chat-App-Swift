@@ -15,19 +15,12 @@ struct RegistrationView: View {
     
     var body: some View {
         VStack {
-            Button {
-                
-            } label: {
-                VStack {
-                    Image(systemName: "person.circle.fill")
-                        .font(.system(size: 140))
-                        .padding()
-                        .foregroundColor(Color(.systemGray2))
-                }
-            }
-            .navigationViewStyle(StackNavigationViewStyle())
-//            .fullScreenCover(isPresented: $showImagePicker, onDismiss: nil) {
-//            }
+            
+            Image("firebase-logo")
+                .resizable()
+                .scaledToFill()
+                .frame(width: 100, height: 120)
+                .padding(.vertical, 32)
             
             // form fields
             VStack(spacing: 10) {

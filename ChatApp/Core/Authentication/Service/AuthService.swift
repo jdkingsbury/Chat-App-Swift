@@ -68,6 +68,6 @@ class AuthService: ObservableObject {
         let user = User(id: uid, username: username, fullname: fullname, email: email)
         self.currentUser = user
         guard let encodedUser = try? Firestore.Encoder().encode(user) else { return }
-        try? await Firestore.firestore().collection("users").document(user.id).setData(encodedUser)
+        try? await COLLECTION_USERS.document(user.id).setData(encodedUser)
     }
 }
