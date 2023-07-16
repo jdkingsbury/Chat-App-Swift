@@ -10,13 +10,19 @@ import SwiftUI
 struct InboxView: View {
     let user: User
     @State private var showNewMessageView = false
+    @ObservedObject var viewModel: InboxViewModel
+    
+    init(user: User) {
+        self.user = user
+        self.viewModel = InboxViewModel(user: user)
+    }
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 List {
-                    ForEach(0 ... 10, id: \.self) { message in
-                        InboxRowView()
+                    ForEach(viewModel.messages) { message in
+                        InboxRowView(user: user, messageText: message.text)
                     }
                 }
                 .listStyle(PlainListStyle())
