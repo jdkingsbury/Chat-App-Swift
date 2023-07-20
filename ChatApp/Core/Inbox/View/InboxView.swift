@@ -21,8 +21,8 @@ struct InboxView: View {
         NavigationStack {
             ScrollView {
                 List {
-                    ForEach(viewModel.messages) { message in
-                        InboxRowView(user: user, messageText: message.text)
+                    ForEach(viewModel.recentMessages) { recentMessage in
+                        InboxRowView(user: user, messageText: recentMessage.text)
                     }
                 }
                 .listStyle(PlainListStyle())

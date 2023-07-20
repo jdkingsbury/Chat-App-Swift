@@ -42,6 +42,7 @@
 		D1BBA5852A5DCA2800D86D47 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BBA5842A5DCA2700D86D47 /* Message.swift */; };
 		D1BE174D2A52869E00E8B8F0 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BE174C2A52869E00E8B8F0 /* ForgotPasswordView.swift */; };
 		D1BE1A452A63D67B00BA9BC1 /* InboxViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1BE1A442A63D67B00BA9BC1 /* InboxViewModel.swift */; };
+		D1C253502A693FB7003AA282 /* MessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C2534F2A693FB7003AA282 /* MessageViewModel.swift */; };
 		D1C6CAC52A5DD4D900E834B0 /* NewMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C6CAC42A5DD4D900E834B0 /* NewMessageViewModel.swift */; };
 		D1C6CAC72A5DD63000E834B0 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C6CAC62A5DD63000E834B0 /* Constants.swift */; };
 /* End PBXBuildFile section */
@@ -78,6 +79,7 @@
 		D1BBA5842A5DCA2700D86D47 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		D1BE174C2A52869E00E8B8F0 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
 		D1BE1A442A63D67B00BA9BC1 /* InboxViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxViewModel.swift; sourceTree = "<group>"; };
+		D1C2534F2A693FB7003AA282 /* MessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
 		D1C6CAC42A5DD4D900E834B0 /* NewMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageViewModel.swift; sourceTree = "<group>"; };
 		D1C6CAC62A5DD63000E834B0 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -297,6 +299,7 @@
 			isa = PBXGroup;
 			children = (
 				D1B9A0A02A61569E00BFCF82 /* ChatLogViewModel.swift */,
+				D1C2534F2A693FB7003AA282 /* MessageViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -457,6 +460,7 @@
 				D1BBA5812A5DB7F300D86D47 /* ChatBubble.swift in Sources */,
 				D1B8E4F72A5D524F00B3063B /* ProfileViewModel.swift in Sources */,
 				D1BE174D2A52869E00E8B8F0 /* ForgotPasswordView.swift in Sources */,
+				D1C253502A693FB7003AA282 /* MessageViewModel.swift in Sources */,
 				D1BBA5832A5DB81600D86D47 /* ChatMessageCell.swift in Sources */,
 				D143D9442A51871B0091B691 /* InboxView.swift in Sources */,
 				D143D9462A5188A90091B691 /* NewMessageView.swift in Sources */,
