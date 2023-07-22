@@ -52,7 +52,9 @@ struct LoginView: View {
                 // sign in button
                 Button {
                     Task {
-                        try await viewModel.signIn()                    }
+                        try await viewModel.signIn()
+                        
+                    }
                 } label: {
                     HStack(spacing: 3) {
                         Text("Sign in")

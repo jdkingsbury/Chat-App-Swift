@@ -53,6 +53,9 @@ struct ChatView: View {
                             ScrollViewProxy.scrollTo(Self.emptyScrollToString, anchor: .bottom)
                         }
                     }
+                    .onDisappear() {
+                        viewModel.firestoreListener?.remove()
+                    }
                 }
             }
             

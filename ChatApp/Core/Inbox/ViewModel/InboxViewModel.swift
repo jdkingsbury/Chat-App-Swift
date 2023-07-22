@@ -6,41 +6,52 @@
 //
 
 import SwiftUI
+import Firebase
 
 class InboxViewModel: ObservableObject {
-    let user: User
-    
     @Published var recentMessages = [Message]()
     @Published var messageToSetVisible: String?
     
-    init(user: User) {
-        self.user = user
-        Task { await fetchRecentMessages() }
+    init() {
+        Task { try await fetchRecentMessages() }
     }
     
+    private var firestoreListener: ListenerRegistration?
+    
     @MainActor
-    func fetchRecentMessages() {
+    func fetchRecentMessages() async throws {
         guard let currentUid = AuthService.shared.userSession?.uid else { return }
-//        let uid = user.id
+        
+        firestoreListener?.remove()
+        self.recentMessages.removeAll()
                 
-        let query = COLLECTION_MESSAGES
+        firestoreListener = COLLECTION_MESSAGES
             .document(currentUid)
             .collection("recent-messages")
             .order(by: "timestamp", descending: false)
-        
-        query.addSnapshotListener { querySnapshot, error in
+            .addSnapshotListener { querySnapshot, error in
             if let error = error {
                 print("DEBUG: Failed to listen to messages with error \(error.localizedDescription)")
                 return
             }
             
             querySnapshot?.documentChanges.forEach({ change in
-                if change.type == .added {
-                    let docId = change.document.documentID
-                    self.recentMessages.append(.init(documentId: docId, data: change.document.data()))
+                let docId = change.document.documentID
+                
+                if let index = self.recentMessages.firstIndex(where: { recentMessage in
+                    return recentMessage.id == docId
+                }) {
+                    self.recentMessages.remove(at: index)
                 }
+                
+                if let recentMessage = try? change.document.data(as: Message.self) {
+                    self.recentMessages.insert(recentMessage, at: 0)
+                }
+
+                
             })
         }
     }
+    
 }
 

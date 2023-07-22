@@ -21,12 +21,20 @@ class ChatLogViewModel: ObservableObject {
         Task { try await fetchMessages() }
     }
     
+    var firestoreListener: ListenerRegistration?
+    
     func fetchMessages() async throws {
+        firestoreListener?.remove()
+        
         guard let currentUserId = await AuthService.shared.userSession?.uid else { return }
         
         guard let chatPartnerId = user?.id else { return }
         
-        COLLECTION_MESSAGES.document(currentUserId).collection(chatPartnerId).order(by: "timestamp").addSnapshotListener({ querySnapshot, error in
+        firestoreListener = COLLECTION_MESSAGES
+            .document(currentUserId)
+            .collection(chatPartnerId)
+            .order(by: "timestamp")
+            .addSnapshotListener({ querySnapshot, error in
             if let error = error {
                 print("DEBUG: Failed to listen to messages with error \(error.localizedDescription)")
                 return
@@ -34,8 +42,9 @@ class ChatLogViewModel: ObservableObject {
             
             querySnapshot?.documentChanges.forEach({ change in
                 if change.type == .added {
-                    let data = change.document.data()
-                    self.messages.append(.init(documentId: change.document.documentID, data: data))
+                    if let message = try? change.document.data(as: Message.self) {
+                        self.messages.append(message)
+                    }
                 }
             })
             
