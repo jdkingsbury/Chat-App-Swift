@@ -1,15 +1,14 @@
 //
-//  ChatView.swift
+//  GroupChatView.swift
 //  ChatApp
 //
-//  Created by Jerry Kingsbury on 7/11/23.
+//  Created by Jerry Kingsbury on 7/23/23.
 //
 
 import SwiftUI
 
-struct ChatView: View {
+struct GroupChatView: View {
     let user: User
-    
     @StateObject var viewModel: ChatLogViewModel
     
     init(user: User) {
@@ -17,45 +16,48 @@ struct ChatView: View {
         self._viewModel = StateObject(wrappedValue: ChatLogViewModel(user: user))
     }
     
-    static let emptyScrollToString = "Empty"
-    
     var body: some View {
         VStack {
-            
             ScrollView {
                 ScrollViewReader { ScrollViewProxy in
                     // header
                     VStack {
-                        CircularProfileImageView(user: user, size: .xLarge)
-                        
+                        CircularProfileImageView(user: User.MOCK_USERS[0], size: .xLarge)
+
                         VStack(spacing: 4){
-                            Text(user.username)
+                            Text(User.MOCK_USERS[0].username)
                                 .font(.title3)
                                 .fontWeight(.semibold)
-                            
+
                             Text("Messanger")
                                 .font(.footnote)
                                 .foregroundColor(.gray)
                         }
                     }
                     
+                    // placeholder for messages
+                    
+                    ForEach((0 ... 10), id: \.self) { _ in
+                        GroupChatCell(isFromCurrentUser: true, messageText: "Group Chat")
+                    }
+                    
                     // messages
-                    ForEach(viewModel.messages) { message in
-                        if message.fromId == AuthService.shared.currentUser?.id {
-                            ChatMessageCell(isFromCurrentUser: true, messageText: message.text)
-                        } else {
-                            ChatMessageCell(isFromCurrentUser: false, messageText: message.text)
-                        }
-                    }
-                    .id(Self.emptyScrollToString)
-                    .onReceive(viewModel.$count) { _ in
-                        withAnimation(.easeOut(duration: 0.5)) {
-                            ScrollViewProxy.scrollTo(Self.emptyScrollToString, anchor: .bottom)
-                        }
-                    }
-                    .onDisappear() {
-                        viewModel.firestoreListener?.remove()
-                    }
+//                    ForEach(viewModel.messages) { message in
+//                        if message.fromId == AuthService.shared.currentUser?.id {
+//                            ChatMessageCell(isFromCurrentUser: true, messageText: message.text)
+//                        } else {
+//                            ChatMessageCell(isFromCurrentUser: false, messageText: message.text)
+//                        }
+//                    }
+//                    .id(Self.emptyScrollToString)
+//                    .onReceive(viewModel.$count) { _ in
+//                        withAnimation(.easeOut(duration: 0.5)) {
+//                            ScrollViewProxy.scrollTo(Self.emptyScrollToString, anchor: .bottom)
+//                        }
+//                    }
+//                    .onDisappear() {
+//                        viewModel.firestoreListener?.remove()
+//                    }
                 }
             }
             
@@ -86,8 +88,8 @@ struct ChatView: View {
     }
 }
 
-struct ChatView_Previews: PreviewProvider {
+struct GroupChatView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatView(user: User.MOCK_USERS[0])
+        GroupChatView(user: User.MOCK_USERS[0])
     }
 }

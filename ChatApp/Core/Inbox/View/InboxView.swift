@@ -22,11 +22,7 @@ struct InboxView: View {
             ScrollView {
                 List {
                     ForEach(viewModel.recentMessages) { recentMessage in
-                        Button {
-                            print("Go to chat view")
-                        } label: {
-                            InboxRowView(viewModel: InboxRowViewModel(recentMessage))
-                        }
+                        InboxRowView(viewModel: InboxRowViewModel(recentMessage))
                     }
                 }
                 .listStyle(PlainListStyle())

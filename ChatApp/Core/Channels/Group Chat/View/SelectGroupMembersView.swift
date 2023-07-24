@@ -1,49 +1,24 @@
 //
-//  NewMessageView.swift
+//  SelectGroupMembersView.swift
 //  ChatApp
 //
-//  Created by Jerry Kingsbury on 7/2/23.
+//  Created by Jerry Kingsbury on 7/24/23.
 //
 
 import SwiftUI
 
-struct NewMessageView: View {
+struct SelectGroupMembersView: View {
     @State private var searchText = ""
     @Environment(\.dismiss) var dismiss
     @ObservedObject var viewModel = NewMessageViewModel()
     
     var body: some View {
-        NavigationStack {
+        VStack {
+            // user list view
             ScrollView {
-                VStack {
-                    HStack {
-                        NavigationLink {
-                            SelectGroupMembersView()
-                                .navigationBarBackButtonHidden()
-                        } label: {
-                            ZStack {
-                                Image(systemName: "circle.fill")
-                                    .resizable()
-                                    .frame(width: 40, height: 40)
-                                    .clipShape(Circle())
-                                    .foregroundColor(Color(.systemGray6))
-                                
-                                Image(systemName: "person.3.fill")
-                                    .resizable()
-                                    .frame(width: 25, height: 18)
-                                    .foregroundColor(Color(.black))
-                            }
-                            
-                            Text("Create a new group")
-                                .fontWeight(.semibold)
-                                .font(.subheadline)
-                        }
-                        
-                        Spacer()
-                    }
-                    .foregroundColor(.black)
-                    .padding(.leading)
-                }
+                
+                // Selected users view
+                SelectedGroupMembersView()
                 
                 Text("CONTACTS")
                     .foregroundColor(.gray)
@@ -73,12 +48,12 @@ struct NewMessageView: View {
                             .padding(.leading, 40)
                     }
                 }
-                .searchable(text: $searchText, prompt: "To: ")
+                .searchable(text: $searchText, prompt: "Search...")
             }
             .navigationDestination(for: User.self, destination: { user in
                 ChatView(user: user)
             })
-            .navigationTitle("New Message")
+            .navigationTitle("New group")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -87,15 +62,22 @@ struct NewMessageView: View {
                     }
                     .foregroundColor(.black)
                 }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Next") {
+                        print("Destination")
+                    }
+                    .foregroundColor(.black)
+                }
             }
         }
     }
 }
 
-struct NewMessageView_Previews: PreviewProvider {
+struct SelectGroupMembersView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
-            NewMessageView()
+            SelectGroupMembersView()
         }
     }
 }

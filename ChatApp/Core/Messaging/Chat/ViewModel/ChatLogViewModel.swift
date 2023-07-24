@@ -23,10 +23,12 @@ class ChatLogViewModel: ObservableObject {
     
     var firestoreListener: ListenerRegistration?
     
+    @MainActor
     func fetchMessages() async throws {
         firestoreListener?.remove()
+        messages.removeAll()
         
-        guard let currentUserId = await AuthService.shared.userSession?.uid else { return }
+        guard let currentUserId = AuthService.shared.userSession?.uid else { return }
         
         guard let chatPartnerId = user?.id else { return }
         
