@@ -9,16 +9,27 @@ import SwiftUI
 
 struct NewMessageView: View {
     @State private var searchText = ""
-    @Environment(\.dismiss) var dismiss
     @ObservedObject var viewModel = NewMessageViewModel()
+    @Binding var show: Bool
+    
+    var filteredUsers: [User] {
+        guard !searchText.isEmpty else { return viewModel.users }
+        return viewModel.users.filter { $0.fullname.localizedCaseInsensitiveContains(searchText) ||
+                                        $0.username.localizedCaseInsensitiveContains(searchText) }
+    }
     
     var body: some View {
         NavigationStack {
+            TextField("To: ", text: $searchText)
+                .frame(height: 44)
+                .padding(.leading)
+                .background(Color(.systemGroupedBackground))
+            
             ScrollView {
                 VStack {
                     HStack {
                         NavigationLink {
-                            SelectGroupMembersView()
+                            SelectGroupMembersView(show: $show)
                                 .navigationBarBackButtonHidden()
                         } label: {
                             ZStack {
@@ -51,8 +62,7 @@ struct NewMessageView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 
-                ForEach(viewModel.users) { user in
-                    
+                ForEach(filteredUsers) { user in
                     VStack {
                         NavigationLink(value: user) {
                             HStack {
@@ -68,12 +78,10 @@ struct NewMessageView: View {
                             .padding(.leading)
                         }
                         
-                        
                         Divider()
                             .padding(.leading, 40)
                     }
                 }
-                .searchable(text: $searchText, prompt: "To: ")
             }
             .navigationDestination(for: User.self, destination: { user in
                 ChatView(user: user)
@@ -83,7 +91,7 @@ struct NewMessageView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {
-                        dismiss()
+                        show.toggle()
                     }
                     .foregroundColor(.black)
                 }
@@ -92,10 +100,3 @@ struct NewMessageView: View {
     }
 }
 
-struct NewMessageView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack {
-            NewMessageView()
-        }
-    }
-}

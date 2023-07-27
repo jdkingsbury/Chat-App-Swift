@@ -34,7 +34,7 @@ struct InboxView: View {
                     .navigationBarBackButtonHidden()
             })
             .fullScreenCover(isPresented: $showNewMessageView, content: {
-                NewMessageView()
+                NewMessageView(show: $showNewMessageView)
             })
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -58,6 +58,7 @@ struct InboxView: View {
                             .frame(width: 32, height: 32)
                             .foregroundStyle(.black, Color(.systemGray5))
                     }
+                    
                 }
             }
         }

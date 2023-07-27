@@ -10,6 +10,7 @@ import Firebase
 
 struct UserService {
     
+    // User
     static func fetchUser(withUid uid: String) async throws -> User {
         let snapshot = try await COLLECTION_USERS.document(uid).getDocument()
         return try snapshot.data(as: User.self)
@@ -19,4 +20,5 @@ struct UserService {
         let snapshot = try await COLLECTION_USERS.getDocuments()
         return snapshot.documents.compactMap({ try? $0.data(as: User.self) })
     }
+    
 }

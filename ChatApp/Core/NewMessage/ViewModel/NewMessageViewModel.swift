@@ -20,5 +20,10 @@ class NewMessageViewModel: ObservableObject {
         self.users = try await UserService.fetchAllUsers()
             .filter({ $0.id != AuthService.shared.userSession?.uid })
     }
+    
+    // Select/ Deselect Users
+    
+    
+    // Filters Users for search
 }
 
