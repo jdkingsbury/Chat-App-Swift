@@ -10,7 +10,9 @@ import SwiftUI
 struct NewMessageView: View {
     @State private var searchText = ""
     @ObservedObject var viewModel = NewMessageViewModel()
+    
     @Binding var show: Bool
+    @Binding var selectedUser: User?
     
     var filteredUsers: [User] {
         guard !searchText.isEmpty else { return viewModel.users }
@@ -64,28 +66,28 @@ struct NewMessageView: View {
                 
                 ForEach(filteredUsers) { user in
                     VStack {
-                        NavigationLink(value: user) {
-                            HStack {
-                                CircularProfileImageView(user: user, size: .small)
-                                
-                                Text(user.username)
-                                    .font(.subheadline)
-                                    .fontWeight(.semibold)
-                                
-                                Spacer()
-                            }
-                            .foregroundColor(.black)
-                            .padding(.leading)
+                        HStack {
+                            CircularProfileImageView(user: user, size: .small)
+
+                            Text(user.username)
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+
+                            Spacer()
                         }
+                        .foregroundColor(.black)
+                        .padding(.leading)
+
                         
                         Divider()
                             .padding(.leading, 40)
                     }
+                    .onTapGesture {
+                        selectedUser = user
+                        show.toggle()
+                    }
                 }
             }
-            .navigationDestination(for: User.self, destination: { user in
-                ChatView(user: user)
-            })
             .navigationTitle("New Message")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

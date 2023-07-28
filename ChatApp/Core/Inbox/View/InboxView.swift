@@ -9,8 +9,13 @@ import SwiftUI
 
 struct InboxView: View {
     let user: User
+    
+    @State var selectedUser: User?
     @State private var showNewMessageView = false
+    @State private var showChat = false
+    
     @ObservedObject var viewModel: InboxViewModel
+    
     
     init(user: User) {
         self.user = user
@@ -29,12 +34,20 @@ struct InboxView: View {
                 .frame(height: UIScreen.main.bounds.height - 120)
                  
             }
+            .onChange(of: selectedUser, perform: { newValue in
+                showChat = newValue != nil
+            })
             .navigationDestination(for: User.self, destination: { user in
                 ProfileView(user: user)
                     .navigationBarBackButtonHidden()
             })
+            .navigationDestination(isPresented: $showChat, destination: {
+                if let user = selectedUser {
+                    ChatView(user: user)
+                }
+            })
             .fullScreenCover(isPresented: $showNewMessageView, content: {
-                NewMessageView(show: $showNewMessageView)
+                NewMessageView(show: $showNewMessageView, selectedUser: $selectedUser)
             })
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
