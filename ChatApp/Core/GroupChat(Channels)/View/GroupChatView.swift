@@ -73,9 +73,7 @@ struct GroupChatView: View {
                     .font(.subheadline)
                 
                 Button {
-                    Task {
-                        await viewModel.sendMessage()
-                    }
+                        viewModel.sendMessage()
                 } label: {
                     Text("Send")
                         .fontWeight(.semibold)

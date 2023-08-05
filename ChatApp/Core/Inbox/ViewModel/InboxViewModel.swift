@@ -1,57 +1,46 @@
 //
-//  InboxViewModel.swift
+//  NewInboxViewModel.swift
 //  ChatApp
 //
-//  Created by Jerry Kingsbury on 7/16/23.
+//  Created by Jerry Kingsbury on 8/3/23.
 //
 
-import SwiftUI
+import Foundation
+import Combine
 import Firebase
 
 class InboxViewModel: ObservableObject {
+    @Published var currentUser: User?
     @Published var recentMessages = [Message]()
-    @Published var messageToSetVisible: String?
+    
+    private var cancellables = Set<AnyCancellable>()
+    private let service = InboxService()
     
     init() {
-        Task { try await fetchRecentMessages() }
+        setupSubscribers()
+        service.observeRecentMessages()
     }
     
-    private var firestoreListener: ListenerRegistration?
-    
-    @MainActor
-    func fetchRecentMessages() async throws {
-        guard let currentUid = AuthService.shared.userSession?.uid else { return }
+    private func setupSubscribers() {
+        UserService.shared.$currentUser.sink { [weak self] user in
+            self?.currentUser = user
+        }.store(in: &cancellables)
         
-        firestoreListener?.remove()
-        self.recentMessages.removeAll()
-                
-        firestoreListener = COLLECTION_MESSAGES
-            .document(currentUid)
-            .collection("recent-messages")
-            .order(by: "timestamp", descending: false)
-            .addSnapshotListener { querySnapshot, error in
-            if let error = error {
-                print("DEBUG: Failed to listen to messages with error \(error.localizedDescription)")
-                return
-            }
+        service.$documentChanges.sink { [weak self] changes in
+            self?.loadInitialMessages(fromChanges: changes)
+        }.store(in: &cancellables)
+    }
+    
+    private func loadInitialMessages(fromChanges changes: [DocumentChange]) {
+        var messages = changes.compactMap({ try? $0.document.data(as: Message.self) })
+        
+        for i in 0 ..< messages.count {
+            let message = messages[i]
             
-            querySnapshot?.documentChanges.forEach({ change in
-                let docId = change.document.documentID
-                
-                if let index = self.recentMessages.firstIndex(where: { recentMessage in
-                    return recentMessage.id == docId
-                }) {
-                    self.recentMessages.remove(at: index)
-                }
-                
-                if let recentMessage = try? change.document.data(as: Message.self) {
-                    self.recentMessages.insert(recentMessage, at: 0)
-                }
-
-                
-            })
+            UserService.fetchUser(withUid: message.chatPartnerId) { user in
+                messages[i].user = user
+                self.recentMessages.append(messages[i])
+            }
         }
     }
-    
 }
-

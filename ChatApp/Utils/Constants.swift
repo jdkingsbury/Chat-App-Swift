@@ -22,4 +22,5 @@ struct FirebaseConstants {
     static let text = "text"
     static let timestamp = "timestamp"
     static let username = "username"
+    static let recentMessages = "recent-messages"
 }

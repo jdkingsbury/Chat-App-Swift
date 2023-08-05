@@ -23,37 +23,30 @@ struct ChatView: View {
         VStack {
             ScrollView {
                 ScrollViewReader { ScrollViewProxy in
-                    // header
-                    VStack {
-                        CircularProfileImageView(user: user, size: .xLarge)
-                        
-                        VStack(spacing: 4){
-                            Text(user.username)
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                            
-                            Text("Messanger")
-                                .font(.footnote)
-                                .foregroundColor(.gray)
-                        }
-                    }
+                    Spacer()
                     
                     // messages
-                    ForEach(viewModel.messages) { message in
-                        if message.fromId == AuthService.shared.currentUser?.id {
-                            ChatMessageCell(isFromCurrentUser: true, messageText: message.text)
-                        } else {
-                            ChatMessageCell(isFromCurrentUser: false, messageText: message.text)
+                    LazyVStack {
+                        ForEach(viewModel.messages) { message in
+                            ChatMessageCell(message: message)
+                        }
+                        .id(Self.emptyScrollToString)
+                        .onReceive(viewModel.$count) { _ in
+                            withAnimation(.easeOut(duration: 0.5)) {
+                                ScrollViewProxy.scrollTo(Self.emptyScrollToString, anchor: .bottom)
+                            }
                         }
                     }
-                    .id(Self.emptyScrollToString)
-                    .onReceive(viewModel.$count) { _ in
-                        withAnimation(.easeOut(duration: 0.5)) {
-                            ScrollViewProxy.scrollTo(Self.emptyScrollToString, anchor: .bottom)
-                        }
-                    }
-                    .onDisappear() {
-                        viewModel.firestoreListener?.remove()
+                }
+            }
+            .toolbar {
+                ToolbarItem (placement: .principal) {
+                    HStack {
+                        CircularProfileImageView(user: user, size: .xxSmall)
+                        
+                        Text(user.username)
+                            .font(.title3)
+                            .fontWeight(.semibold)
                     }
                 }
             }
@@ -70,9 +63,9 @@ struct ChatView: View {
                     .font(.subheadline)
                 
                 Button {
-                    Task {
-                        await viewModel.sendMessage()
-                    }
+                    viewModel.sendMessage()
+                    viewModel.messageText = ""
+                    viewModel.count += 1
                 } label: {
                     Text("Send")
                         .fontWeight(.semibold)
@@ -81,7 +74,6 @@ struct ChatView: View {
             }
             .padding()
         }
-        
     }
 }
 

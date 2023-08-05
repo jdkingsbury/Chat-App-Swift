@@ -22,12 +22,12 @@ struct NewMessageView: View {
     
     var body: some View {
         NavigationStack {
-            TextField("To: ", text: $searchText)
-                .frame(height: 44)
-                .padding(.leading)
-                .background(Color(.systemGroupedBackground))
-            
             ScrollView {
+                TextField("To: ", text: $searchText)
+                    .frame(height: 44)
+                    .padding(.leading)
+                    .background(Color(.systemGroupedBackground))
+                
                 VStack {
                     HStack {
                         NavigationLink {

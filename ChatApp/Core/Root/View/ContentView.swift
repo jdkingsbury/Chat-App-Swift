@@ -12,10 +12,10 @@ struct ContentView: View {
     
     var body: some View {
         Group {
-            if viewModel.userSession == nil {
+            if viewModel.userSession != nil {
+                InboxView()
+            } else {
                 LoginView()
-            } else if let currentUser = viewModel.currentUser {
-                InboxView(user: currentUser)
             }
         }
     }
