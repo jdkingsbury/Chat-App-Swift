@@ -15,9 +15,10 @@ struct SelectableUserCell: View {
             HStack {
                 CircularProfileImageView(user: viewModel.selectableUser.user, size: .small)
                 
-                Text(viewModel.username)
+                Text(viewModel.fullname)
                     .font(.subheadline)
                     .fontWeight(.semibold)
+                    .foregroundColor(Color.theme.primaryText)
                 
                 Spacer()
                 

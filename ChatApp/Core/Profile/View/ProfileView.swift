@@ -20,16 +20,27 @@ struct ProfileView: View {
         VStack {
             // header
             VStack {
-                
                 PhotosPicker(selection: $viewModel.selectedImage) {
-                    if let profileImage = viewModel.profileImage {
-                        profileImage
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 80, height: 80)
-                            .clipShape(Circle())
-                    } else {
-                        CircularProfileImageView(user: viewModel.user, size: .xLarge)
+                    ZStack(alignment: .bottomTrailing) {
+                        if let profileImage = viewModel.profileImage {
+                            profileImage
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 80, height: 80)
+                                .clipShape(Circle())
+                        } else {
+                            CircularProfileImageView(user: viewModel.user, size: .xLarge)
+                        }
+                        
+                        ZStack {
+                            Circle()
+                                .fill(Color.theme.background)
+                                .frame(width: 24, height: 24)
+                            
+                            Image(systemName: "camera.circle.fill")
+                                .foregroundStyle(Color.theme.primaryText, Color(.systemGray5))
+                                .frame(width: 18, height: 18)
+                        }
                     }
                 }
                 
@@ -46,18 +57,6 @@ struct ProfileView: View {
                                 dismiss()
                             }
                         }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        Task {
-                            try await viewModel.updateUserData()
-                            dismiss()
-                        }
-                    } label: {
-                        Text("Save")
-                            .font(.subheadline)
-                            .fontWeight(.bold)
-                    }
                 }
             }
             

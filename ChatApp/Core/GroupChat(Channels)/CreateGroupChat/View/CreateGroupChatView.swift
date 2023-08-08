@@ -35,7 +35,7 @@ struct CreateGroupChatView: View {
                             .resizable()
                             .scaledToFill()
                             .frame(width: 64, height: 64)
-                            .foregroundColor(Color(.systemGray4))
+                            .foregroundColor(Color.theme.secondaryBackground)
                             .clipShape(Circle())
                     }
                 }
@@ -45,14 +45,14 @@ struct CreateGroupChatView: View {
                     
                     Rectangle()
                         .frame(height: 0.5)
-                        .foregroundColor(Color(.separator))
+                        .foregroundColor(Color.theme.secondaryBackground)
                     
                     TextField("Enter group name", text: $groupName)
-                        .foregroundColor(Color(.separator))
+                        .foregroundColor(Color.theme.primaryText)
                     
                     Rectangle()
                         .frame(height: 0.5)
-                        .foregroundColor(Color(.separator))
+                        .foregroundColor(Color.theme.secondaryBackground)
                 }
                 .padding()
             }
@@ -66,7 +66,7 @@ struct CreateGroupChatView: View {
                 Button("Back") {
                     dismiss()
                 }
-                .foregroundColor(.black)
+                .foregroundColor(Color.theme.primaryText)
             }
             
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -75,7 +75,7 @@ struct CreateGroupChatView: View {
                     show.toggle()
                 }
                 .disabled(groupName.isEmpty)
-                .foregroundColor(.black)
+                .foregroundColor(Color.theme.primaryText)
             }
         }
     }

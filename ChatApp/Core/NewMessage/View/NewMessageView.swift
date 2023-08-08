@@ -9,24 +9,18 @@ import SwiftUI
 
 struct NewMessageView: View {
     @State private var searchText = ""
-    @ObservedObject var viewModel = NewMessageViewModel()
+    @StateObject var viewModel = NewMessageViewModel()
     
     @Binding var show: Bool
     @Binding var selectedUser: User?
     
-    var filteredUsers: [User] {
-        guard !searchText.isEmpty else { return viewModel.users }
-        return viewModel.users.filter { $0.fullname.localizedCaseInsensitiveContains(searchText) ||
-                                        $0.username.localizedCaseInsensitiveContains(searchText) }
-    }
-    
     var body: some View {
         NavigationStack {
             ScrollView {
-                TextField("To: ", text: $searchText)
+                TextField("To: ", text: $viewModel.searchText)
                     .frame(height: 44)
                     .padding(.leading)
-                    .background(Color(.systemGroupedBackground))
+                    .background(Color.theme.secondaryBackground)
                 
                 VStack {
                     HStack {
@@ -39,12 +33,11 @@ struct NewMessageView: View {
                                     .resizable()
                                     .frame(width: 40, height: 40)
                                     .clipShape(Circle())
-                                    .foregroundColor(Color(.systemGray6))
+                                    .foregroundColor(Color(.systemGray4))
                                 
                                 Image(systemName: "person.3.fill")
                                     .resizable()
                                     .frame(width: 25, height: 18)
-                                    .foregroundColor(Color(.black))
                             }
                             
                             Text("Create a new group")
@@ -54,7 +47,6 @@ struct NewMessageView: View {
                         
                         Spacer()
                     }
-                    .foregroundColor(.black)
                     .padding(.leading)
                 }
                 
@@ -64,27 +56,27 @@ struct NewMessageView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 
-                ForEach(filteredUsers) { user in
-                    VStack {
-                        HStack {
-                            CircularProfileImageView(user: user, size: .small)
+                LazyVStack {
+                    ForEach(viewModel.filteredUsers) { user in
+                        VStack {
+                            HStack {
+                                CircularProfileImageView(user: user, size: .small)
 
-                            Text(user.username)
-                                .font(.subheadline)
-                                .fontWeight(.semibold)
+                                Text(user.fullname)
+                                    .font(.subheadline)
+                                    .fontWeight(.semibold)
 
-                            Spacer()
+                                Spacer()
+                            }
+                            .onTapGesture {
+                                selectedUser = user
+                                show.toggle()
+                            }
+                            
+                            Divider()
+                                .padding(.leading, 40)
                         }
-                        .foregroundColor(.black)
                         .padding(.leading)
-
-                        
-                        Divider()
-                            .padding(.leading, 40)
-                    }
-                    .onTapGesture {
-                        selectedUser = user
-                        show.toggle()
                     }
                 }
             }
@@ -95,7 +87,7 @@ struct NewMessageView: View {
                     Button("Cancel") {
                         show.toggle()
                     }
-                    .foregroundColor(.black)
+                    .foregroundColor(Color.theme.primaryText)
                 }
             }
         }

@@ -37,6 +37,12 @@ struct User: Codable, Identifiable, Hashable {
     }
 }
 
+extension User: Equatable {
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
 extension User {
     static var MOCK_USERS: [User] = [
         .init(uid: NSUUID().uuidString, username: "batman", profileImageUrl: nil, fullname: "Bruce Wayne", email: "batman@gmail.com"),

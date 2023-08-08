@@ -22,6 +22,7 @@ struct SelectedGroupMembersView: View {
                                 .font(.system(size: 11))
                                 .fontWeight(.semibold)
                                 .multilineTextAlignment(.center)
+                                .foregroundColor(Color.theme.primaryText)
                         }
                         .frame(width: 64)
                         
@@ -35,7 +36,6 @@ struct SelectedGroupMembersView: View {
                                 .padding(4)
                         }
                         .background(Color(.systemGray6))
-                        .foregroundColor(.black)
                         .clipShape(Circle())
 
                         

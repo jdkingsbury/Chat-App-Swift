@@ -63,7 +63,6 @@ struct SelectGroupMembersView: View {
                         Button("Back") {
                             dismiss()
                         }
-                        .foregroundColor(.black)
                     }
                     ToolbarItem(placement: .navigationBarTrailing) {
                         NavigationLink {
@@ -73,9 +72,9 @@ struct SelectGroupMembersView: View {
                             Text("Next")
                             
                         }
-                            .foregroundColor(.black)
                     }
                 }
+                .foregroundColor(Color.theme.primaryText)
             }
         }
     }

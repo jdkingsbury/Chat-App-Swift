@@ -47,7 +47,7 @@ class CreateGroupChatViewModel: ObservableObject {
                                    "lastMessage": "\(currentUser.username) started a group chat"]
         
         if let uiImage = uiImage {
-            let imageUrl = try? await ImageUploader.uploadImage(image: uiImage)
+            let imageUrl = try? await ImageUploader.uploadImage(image: uiImage, type: .group)
             data["groupChatImageUrl"] = imageUrl
         }
         

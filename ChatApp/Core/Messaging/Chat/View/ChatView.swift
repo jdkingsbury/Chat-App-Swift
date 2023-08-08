@@ -10,43 +10,34 @@ import SwiftUI
 struct ChatView: View {
     let user: User
     
-    @StateObject var viewModel: ChatLogViewModel
+    @State private var messageText = ""
+    @State private var isInitialLoad = false
+    
+    @StateObject var viewModel: ChatViewModel
     
     init(user: User) {
         self.user = user
-        self._viewModel = StateObject(wrappedValue: ChatLogViewModel(user: user))
+        self._viewModel = StateObject(wrappedValue: ChatViewModel(user: user))
     }
     
     static let emptyScrollToString = "Empty"
     
     var body: some View {
         VStack {
-            ScrollView {
-                ScrollViewReader { ScrollViewProxy in
-                    Spacer()
-                    
-                    // messages
+            ScrollViewReader { proxy in
+                ScrollView {
                     LazyVStack {
-                        ForEach(viewModel.messages) { message in
-                            ChatMessageCell(message: message)
-                        }
-                        .id(Self.emptyScrollToString)
-                        .onReceive(viewModel.$count) { _ in
-                            withAnimation(.easeOut(duration: 0.5)) {
-                                ScrollViewProxy.scrollTo(Self.emptyScrollToString, anchor: .bottom)
-                            }
+                        ForEach(viewModel.messages.indices, id: \.self) { index in
+                            ChatMessageCell(message: viewModel.messages[index], nextMessage: viewModel.nextMessage(forIndex: index))
+                                .id(viewModel.messages[index].id)
                         }
                     }
                 }
-            }
-            .toolbar {
-                ToolbarItem (placement: .principal) {
-                    HStack {
-                        CircularProfileImageView(user: user, size: .xxSmall)
-                        
-                        Text(user.username)
-                            .font(.title3)
-                            .fontWeight(.semibold)
+                .onChange(of: viewModel.messages) { newValue in
+                    guard let lastMessage = newValue.last else { return }
+                    
+                    withAnimation(.spring()) {
+                        proxy.scrollTo(lastMessage.id)
                     }
                 }
             }
@@ -54,25 +45,24 @@ struct ChatView: View {
             Spacer()
             
             // message input view
-            ZStack(alignment: .trailing) {
-                TextField("Message...", text: $viewModel.messageText, axis: .vertical)
-                    .padding(12)
-                    .padding(.trailing, 48)
-                    .background(Color(.systemGroupedBackground))
-                    .clipShape(Capsule())
-                    .font(.subheadline)
-                
-                Button {
-                    viewModel.sendMessage()
-                    viewModel.messageText = ""
-                    viewModel.count += 1
-                } label: {
-                    Text("Send")
+            MessageInputView(messageText: $messageText, viewModel: viewModel)
+        }
+        .onDisappear {
+            viewModel.removeChatListener()
+        }
+        .onChange(of: viewModel.messages) { _ in
+            Task { try await viewModel.updateMessageStatusIfNecessary() }
+        }
+        .toolbar {
+            ToolbarItem (placement: .principal) {
+                HStack {
+                    CircularProfileImageView(user: user, size: .xxSmall)
+                    
+                    Text(user.username)
+                        .font(.title3)
                         .fontWeight(.semibold)
                 }
-                .padding(.horizontal)
             }
-            .padding()
         }
     }
 }

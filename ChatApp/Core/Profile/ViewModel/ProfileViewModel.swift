@@ -14,38 +14,26 @@ class ProfileViewModel: ObservableObject {
     @Published var user: User
     
     @Published var selectedImage: PhotosPickerItem? {
-        didSet { Task { await loadImage(fromItem: selectedImage) } }
+        didSet { Task { try await loadImage() } }
     }
-    @Published var profileImage: Image?
     
-    private var uiImage: UIImage?
+    @Published var profileImage: Image?
     
     init(user: User) {
         self.user = user
     }
     
-    func loadImage(fromItem item: PhotosPickerItem?) async {
-        guard let item = item else { return }
-        
-        guard let data = try? await item.loadTransferable(type: Data.self) else { return }
-        guard let uiImage = UIImage(data: data) else { return }
-        self.uiImage = uiImage
-        self.profileImage = Image(uiImage: uiImage)
+    @MainActor
+    func loadImage() async throws {
+        guard let uiImage = try await PhotosPickerHelper.loadImage(fromItem: selectedImage) else { return }
+        profileImage = Image(uiImage: uiImage)
+        try await updateUserProfileImage(uiImage)
     }
     
-    func updateUserData() async throws {
-        // update profile image if changed
-        
-        var data = [String: Any]()
-        
-        if let uiImage = uiImage {
-            let imageUrl = try? await ImageUploader.uploadImage(image: uiImage)
-            data["profileImageUrl"] = imageUrl
-        }
-        
-        if !data.isEmpty {
-            try await COLLECTION_USERS.document(user.id).updateData(data)
-        }
+    func updateUserProfileImage(_ uiImage: UIImage) async throws {
+        guard let imageUrl = try? await ImageUploader.uploadImage(image: uiImage, type: .profile) else { return }
+        try await UserService.shared.updateUserProfileImageUrl(imageUrl)
     }
+    
 }
 

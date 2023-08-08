@@ -10,6 +10,15 @@ import Firebase
 
 class NewMessageViewModel: ObservableObject {
     @Published var users = [User]()
+    @Published var searchText = ""
+    
+    var filteredUsers: [User] {
+        if searchText.isEmpty {
+            return users
+        } else {
+            return users.filter({ $0.fullname.lowercased().contains(searchText.lowercased()) })
+        }
+    }
     
     init() {
         Task { try await fetchAllUsers() }
@@ -18,12 +27,7 @@ class NewMessageViewModel: ObservableObject {
     @MainActor
     func fetchAllUsers() async throws {
         self.users = try await UserService.fetchAllUsers()
-            .filter({ $0.id != AuthService.shared.userSession?.uid })
     }
     
-    // Select/ Deselect Users
-    
-    
-    // Filters Users for search
 }
 

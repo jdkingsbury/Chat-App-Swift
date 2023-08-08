@@ -23,7 +23,7 @@ class AuthService: ObservableObject {
     
     init() {
         self.userSession = Auth.auth().currentUser
-        loadCurrentUserData()
+        Task { try await loadCurrentUserData() }
     }
     
     @MainActor
@@ -31,9 +31,10 @@ class AuthService: ObservableObject {
         do {
             let result = try await Auth.auth().signIn(withEmail: email, password: password)
             self.userSession = result.user
-            loadCurrentUserData()
+            try await loadCurrentUserData()
         } catch {
             print("DEBUG: Failed to log in with error \(error.localizedDescription)")
+            throw error
         }
     }
     
@@ -42,27 +43,34 @@ class AuthService: ObservableObject {
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
             self.userSession = result.user
-            await uploadUserData(uid: result.user.uid, username: username, email: email, fullname: fullname)
+            try await uploadUserData(uid: result.user.uid, username: username, email: email, fullname: fullname)
+            try await loadCurrentUserData()
         } catch {
             print("DEBUG: Failed to register user with error \(error.localizedDescription)")
+            throw error
         }
     }
     
-    private func loadCurrentUserData() {
+    private func loadCurrentUserData() async throws {
         Task { try await UserService.shared.fetchCurrentUser() }
     }
     
     func signout() {
-        try? Auth.auth().signOut()
-        self.userSession = nil
-        self.currentUser = nil
+        do {
+            try Auth.auth().signOut()
+            self.userSession = nil
+            UserService.shared.currentUser = nil
+            InboxService.shared.reset()
+        } catch {
+            print("DEBUG: failed to signout")
+        }
     }
     
     func deleteAccount() {
         print("Delete account...")
     }
     
-    private func uploadUserData(uid: String, username: String, email: String, fullname: String) async {
+    private func uploadUserData(uid: String, username: String, email: String, fullname: String) async throws {
         let user = User(uid: uid, username: username, fullname: fullname, email: email)
         self.currentUser = user
         guard let encodedUser = try? Firestore.Encoder().encode(user) else { return }

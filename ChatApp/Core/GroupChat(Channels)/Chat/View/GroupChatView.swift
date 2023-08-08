@@ -9,11 +9,11 @@ import SwiftUI
 
 struct GroupChatView: View {
     let user: User
-    @StateObject var viewModel: ChatLogViewModel
+    @StateObject var viewModel: GroupChatViewModel
     
     init(user: User) {
         self.user = user
-        self._viewModel = StateObject(wrappedValue: ChatLogViewModel(user: user))
+        self._viewModel = StateObject(wrappedValue: GroupChatViewModel(user: user))
     }
     
     var body: some View {
@@ -40,24 +40,6 @@ struct GroupChatView: View {
                     ForEach((0 ... 10), id: \.self) { _ in
                         GroupChatCell(isFromCurrentUser: true, messageText: "Group Chat")
                     }
-                    
-                    // messages
-//                    ForEach(viewModel.messages) { message in
-//                        if message.fromId == AuthService.shared.currentUser?.id {
-//                            ChatMessageCell(isFromCurrentUser: true, messageText: message.text)
-//                        } else {
-//                            ChatMessageCell(isFromCurrentUser: false, messageText: message.text)
-//                        }
-//                    }
-//                    .id(Self.emptyScrollToString)
-//                    .onReceive(viewModel.$count) { _ in
-//                        withAnimation(.easeOut(duration: 0.5)) {
-//                            ScrollViewProxy.scrollTo(Self.emptyScrollToString, anchor: .bottom)
-//                        }
-//                    }
-//                    .onDisappear() {
-//                        viewModel.firestoreListener?.remove()
-//                    }
                 }
             }
             

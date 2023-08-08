@@ -10,9 +10,10 @@ import Foundation
 extension Date {
     private var timeFormatter: DateFormatter {
         let formatter = DateFormatter()
-        
-        formatter.timeStyle = .short
-        formatter.dateFormat = "HH:mm"
+        formatter.timeStyle = .medium
+        formatter.dateFormat = "h:mm a"
+        formatter.amSymbol = "AM"
+        formatter.pmSymbol = "PM"
         return formatter
     }
     

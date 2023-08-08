@@ -7,15 +7,21 @@
 
 import FirebaseFirestoreSwift
 import Firebase
+import UIKit
+
+enum MessageType {
+    case text(String)
+    case image(UIImage)
+}
 
 struct Message: Codable, Identifiable, Hashable {
     @DocumentID var messageId: String?
     let fromId: String
     let toId: String
-    let read: Bool
+    var read: Bool
     let messageText: String
     let timestamp: Timestamp
-    
+    var imageUrl: String?
     
     var user: User?
     
@@ -34,5 +40,14 @@ struct Message: Codable, Identifiable, Hashable {
     var timestampString: String {
         return timestamp.dateValue().timestampString()
     }
+}
+
+struct Conversation: Identifiable, Hashable, Codable {
+    @DocumentID var conversationId: String?
+    let lastMessage: Message
+    var firstMessageId: String?
     
+    var id: String {
+        return conversationId ?? NSUUID().uuidString
+    }
 }

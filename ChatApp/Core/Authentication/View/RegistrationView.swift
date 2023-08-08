@@ -69,9 +69,7 @@ struct RegistrationView: View {
             
             // sign up button
             Button {
-                Task {
-                    try await viewModel.createUser()
-                }
+                Task { try await viewModel.createUser() }
             } label: {
                 HStack(spacing: 3) {
                     Text("Sign up")
@@ -100,6 +98,10 @@ struct RegistrationView: View {
                 }
                 .font(.system(size: 14))
             }
+        }
+        .alert(isPresented: $viewModel.showAlert) {
+            Alert(title: Text("Error"),
+                  message: Text(viewModel.authError?.description ?? ""))
         }
     }
 }
