@@ -24,19 +24,16 @@ class GroupChatViewModel: ObservableObject {
     
     // fetch group chat messages
     func observeMessages() {
-        MessageService.observeMessages(chatPartner: user) { messages in
-            self.messages.append(contentsOf: messages)
-        }
+//        ChatService.observeMessages(chatPartner: user) { messages in
+//            self.messages.append(contentsOf: messages)
+//        }
         
-        DispatchQueue.main.async {
-            self.count += 1
-        }
     }
     
     // send group chat message
     @MainActor
     func sendMessage() {
-        MessageService.sendMessage(messageText, toUser: user)
+//        ChatService.sendMessage(messageText, toUser: user)
     }
     
 }
