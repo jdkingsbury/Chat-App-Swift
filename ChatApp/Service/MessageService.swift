@@ -12,10 +12,15 @@ struct MessageService {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         guard let lastMessage = messages.last, !lastMessage.read else { return }
         
+<<<<<<< HEAD
         try await FirestoreConstants.MessagesCollection
+=======
+        try await COLLECTION_MESSAGES
+>>>>>>> testing
             .document(uid)
             .collection("recent-messages")
             .document(lastMessage.id)
             .updateData(["read": true])
     }
 }
+
