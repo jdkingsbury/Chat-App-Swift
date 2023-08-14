@@ -16,7 +16,8 @@ class NewMessageViewModel: ObservableObject {
         if searchText.isEmpty {
             return users
         } else {
-            return users.filter({ $0.fullname.lowercased().contains(searchText.lowercased()) })
+            return users.filter({   $0.fullname.lowercased().contains(searchText.lowercased()) ||
+                                    $0.username.lowercased().contains(searchText.lowercased()) })
         }
     }
     
@@ -26,7 +27,9 @@ class NewMessageViewModel: ObservableObject {
     
     @MainActor
     func fetchAllUsers() async throws {
-        self.users = try await UserService.fetchAllUsers()
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        let users = try await UserService.fetchAllUsers()
+        self.users = users.filter({ $0.id != currentUid })
     }
     
 }

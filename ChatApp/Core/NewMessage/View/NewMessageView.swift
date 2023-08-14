@@ -22,6 +22,8 @@ struct NewMessageView: View {
                     .padding(.leading)
                     .background(Color.theme.secondaryBackground)
                 
+//            MARK: - Create Group Message Button
+//                Create Group Message Button
 //                VStack {
 //                    HStack {
 //                        NavigationLink {
@@ -55,6 +57,7 @@ struct NewMessageView: View {
 //                    .padding(.leading)
 //                    .padding(.top)
 //                }
+//                MARK: -
                 
                 Text("CONTACTS")
                     .foregroundColor(.gray)

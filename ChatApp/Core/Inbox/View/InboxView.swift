@@ -62,15 +62,8 @@ struct InboxView: View {
                         .navigationBarBackButtonHidden()
                 }
             })
-            .navigationDestination(for: Route.self, destination: { route in
-                switch route {
-                case .profile(let user):
-                    ProfileView(user: user)
-                case .chatView(let user):
-                    ChatView(user: user)
-                }
-            })
-            .overlay { if !viewModel.didCompleteInitialLoad { ProgressView() } }
+
+//            .overlay { if !viewModel.didCompleteInitialLoad { ProgressView() } }
             .navigationTitle("Chats")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

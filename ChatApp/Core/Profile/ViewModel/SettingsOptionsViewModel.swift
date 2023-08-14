@@ -36,9 +36,9 @@ enum SettingsOptionsViewModel: Int, CaseIterable, Identifiable {
     
     var imageBackgroundColor: Color {
         switch self {
-        case .darkMode: return .black
+        case .darkMode: return Color.theme.primaryText
         case .activeStatus: return Color(.systemGreen)
-        case .accessibility: return .black
+        case .accessibility: return Color.theme.primaryText
         case .privacy: return Color(.systemBlue)
         case .notifications: return Color(.systemPurple)
         }
