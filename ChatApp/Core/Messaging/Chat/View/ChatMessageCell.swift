@@ -41,7 +41,7 @@ struct ChatMessageCell: View {
                         .padding(12)
                         .background(Color(.systemBlue))
                         .foregroundColor(.white)
-                        .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser))
+                        .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser, shouldRoundAllCorners: false))
                         .padding(.horizontal)
                         .frame(maxWidth: UIScreen.main.bounds.width / 1.5, alignment: .trailing)
                 }
@@ -61,7 +61,7 @@ struct ChatMessageCell: View {
                             .padding(12)
                             .background(Color(.systemGray6))
                             .foregroundColor(Color.theme.primaryText)
-                            .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser))
+                            .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser, shouldRoundAllCorners: !shouldShowChatPartnerImage))
                             .frame(maxWidth: UIScreen.main.bounds.width / 1.75, alignment: .leading)
                             .padding(.leading, shouldShowChatPartnerImage ? 0 : 32)
                     }

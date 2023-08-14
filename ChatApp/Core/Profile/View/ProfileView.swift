@@ -61,19 +61,10 @@ struct ProfileView: View {
             }
             
             // list
-            
             List {
                 Section {
-                    ForEach(SettingsOptionsViewModel.allCases) {option in
-                        HStack {
-                            Image(systemName: option.imageName)
-                                .resizable()
-                                .frame(width: 24, height: 24)
-                                .foregroundColor(option.imageBackgroundColor)
-                            
-                            Text(option.title)
-                                .font(.subheadline)
-                        }
+                    ForEach(SettingsOptionsViewModel.allCases) {viewModel in
+                        ProfileRowView(viewModel: viewModel)
                     }
                 }
                 

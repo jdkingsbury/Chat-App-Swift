@@ -22,39 +22,39 @@ struct NewMessageView: View {
                     .padding(.leading)
                     .background(Color.theme.secondaryBackground)
                 
-//                VStack {
-//                    HStack {
-//                        NavigationLink {
-//                            SelectGroupMembersView(show: $show)
-//                                .navigationBarBackButtonHidden()
-//                        } label: {
-//                            HStack {
-//                                ZStack {
-//                                    Image(systemName: "circle.fill")
-//                                        .resizable()
-//                                        .frame(width: 40, height: 40)
-//                                        .clipShape(Circle())
-//                                        .foregroundColor(Color.theme.secondaryBackground)
-//
-//
-//                                    Image(systemName: "person.3.fill")
-//                                        .resizable()
-//                                        .frame(width: 25, height: 18)
-//                                        .foregroundColor(Color.theme.primaryText)
-//                                }
-//
-//                                Text("Create a new group")
-//                                    .fontWeight(.semibold)
-//                                    .font(.subheadline)
-//                                    .foregroundColor(Color.theme.primaryText)
-//                            }
-//                        }
-//
-//                        Spacer()
-//                    }
-//                    .padding(.leading)
-//                    .padding(.top)
-//                }
+                VStack {
+                    HStack {
+                        NavigationLink {
+                            SelectGroupMembersView(show: $show)
+                                .navigationBarBackButtonHidden()
+                        } label: {
+                            HStack {
+                                ZStack {
+                                    Image(systemName: "circle.fill")
+                                        .resizable()
+                                        .frame(width: 40, height: 40)
+                                        .clipShape(Circle())
+                                        .foregroundColor(Color.theme.secondaryBackground)
+
+
+                                    Image(systemName: "person.3.fill")
+                                        .resizable()
+                                        .frame(width: 25, height: 18)
+                                        .foregroundColor(Color.theme.primaryText)
+                                }
+
+                                Text("Create a new group")
+                                    .fontWeight(.semibold)
+                                    .font(.subheadline)
+                                    .foregroundColor(Color.theme.primaryText)
+                            }
+                        }
+
+                        Spacer()
+                    }
+                    .padding(.leading)
+                    .padding(.top)
+                }
                 
                 Text("CONTACTS")
                     .foregroundColor(.gray)

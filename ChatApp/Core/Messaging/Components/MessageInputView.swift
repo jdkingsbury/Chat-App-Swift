@@ -9,11 +9,14 @@ import SwiftUI
 import PhotosUI
 
 struct MessageInputView: View {
+    
     @Binding var messageText: String
     @ObservedObject var viewModel: ChatViewModel
     
+    @State private var isShowingSend = false
+    
     var body: some View {
-        ZStack(alignment: .trailing) {
+        ZStack(alignment: .bottomTrailing) {
             HStack {
                 if let image = viewModel.messageImage {
                     ZStack(alignment: .topTrailing) {
@@ -54,21 +57,29 @@ struct MessageInputView: View {
                         .padding(.leading, 4)
                         .padding(.trailing, 48)
                         .background(Color.theme.secondaryBackground)
-                        .clipShape(Capsule())
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
                         .font(.subheadline)
                 }
             }
             
-            Button {
-                Task {
-                    try await viewModel.sendMessage(messageText)
-                    messageText = ""
+            if formIsValid {
+                Button {
+                    Task {
+                        try await viewModel.sendMessage(messageText)
+                        messageText = ""
+                    }
+                } label: {
+                    ZStack {
+                        Image(systemName: "paperplane.fill")
+                            .foregroundColor(Color(.systemBlue))
+                    }
+                    
                 }
-            } label: {
-                Text("Send")
-                    .fontWeight(.semibold)
+                .transition(.asymmetric(insertion: .scale, removal: .opacity))
+                .padding(.horizontal, 11)
+                .padding(.bottom, 13)
             }
-            .padding(.horizontal)
+            
 
         }
         .overlay {
@@ -81,6 +92,15 @@ struct MessageInputView: View {
         .padding(.bottom, 8)
     }
 }
+
+extension MessageInputView: AuthenticationFormProtocol {
+    var formIsValid: Bool {
+        return !messageText.isEmpty
+        || (viewModel.messageImage != nil)
+    }
+}
+
+
 //
 //struct MessageInputView_Previews: PreviewProvider {
 //    static var previews: some View {

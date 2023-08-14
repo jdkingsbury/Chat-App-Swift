@@ -21,7 +21,7 @@ struct GroupChatCell: View {
                     .padding(12)
                     .background(Color(.systemBlue))
                     .foregroundColor(.white)
-                    .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser))
+                    .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser, shouldRoundAllCorners: false))
                     .frame(maxWidth: UIScreen.main.bounds.width / 1.5, alignment: .trailing)
             } else {
                 HStack(alignment: .bottom, spacing: 8) {
@@ -32,7 +32,7 @@ struct GroupChatCell: View {
                         .padding(12)
                         .background(Color(.systemGray5))
                         .foregroundColor(.black)
-                        .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser))
+                        .clipShape(ChatBubble(isFromCurrentUser: isFromCurrentUser, shouldRoundAllCorners: false))
                         .frame(maxWidth: UIScreen.main.bounds.width / 1.75, alignment: .leading)
                     
                     Spacer()
