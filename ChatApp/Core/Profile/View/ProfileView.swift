@@ -50,8 +50,10 @@ struct ProfileView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Image(systemName: "chevron.left")
-                        .imageScale(.large)
+                    Image(systemName: "chevron.left.circle.fill")
+                        .resizable()
+                        .frame(width: 32, height: 32)
+                        .foregroundStyle(Color.theme.primaryText, Color.theme.secondaryBackground)
                         .onTapGesture {
                             Task {
                                 dismiss()

@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct ChatView: View {
-    let user: User
+    private let user: User
+    private var thread: Thread?
+    
+    @Environment(\.dismiss) var dismiss
     
     @State private var messageText = ""
     @State private var isInitialLoad = false
@@ -20,8 +23,6 @@ struct ChatView: View {
         self._viewModel = StateObject(wrappedValue: ChatViewModel(user: user))
     }
     
-    static let emptyScrollToString = "Empty"
-    
     var body: some View {
         VStack {
             ScrollViewReader { proxy in
@@ -32,12 +33,13 @@ struct ChatView: View {
                                 .id(viewModel.messages[index].id)
                         }
                     }
+                    .padding(.vertical)
                 }
                 .onChange(of: viewModel.messages) { newValue in
                     guard let lastMessage = newValue.last else { return }
                     
-                    withAnimation(.spring()) {
-                        proxy.scrollTo(lastMessage.id)
+                    withAnimation(.spring(blendDuration: 0.5)) {
+                        proxy.scrollTo(lastMessage.id, anchor: .bottom)
                     }
                 }
             }
@@ -62,6 +64,18 @@ struct ChatView: View {
                         .font(.title3)
                         .fontWeight(.semibold)
                 }
+            }
+            
+            ToolbarItem(placement: .navigationBarLeading) {
+                Image(systemName: "chevron.left.circle.fill")
+                    .resizable()
+                    .frame(width: 32, height: 32)
+                    .foregroundStyle(Color.theme.primaryText, Color.theme.secondaryBackground)
+                    .onTapGesture {
+                        Task {
+                            dismiss()
+                        }
+                    }
             }
         }
     }
