@@ -28,6 +28,9 @@
 		D143D94A2A5204D70091B691 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D143D9492A5204D70091B691 /* GoogleService-Info.plist */; };
 		D143D9562A52096A0091B691 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D143D9552A52096A0091B691 /* AuthService.swift */; };
 		D14B9D132A832E6F008D49E2 /* ProfileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14B9D122A832E6F008D49E2 /* ProfileRowView.swift */; };
+		D14D06C02A8CC12200FFFD01 /* DarkModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14D06BF2A8CC12200FFFD01 /* DarkModeView.swift */; };
+		D14D06C22A8CC2B100FFFD01 /* DarkModeOptionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14D06C12A8CC2B100FFFD01 /* DarkModeOptionsViewModel.swift */; };
+		D14D06C82A8CD01D00FFFD01 /* ActiveStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14D06C72A8CD01D00FFFD01 /* ActiveStatusView.swift */; };
 		D168DC9E2A6F9EA500BC3282 /* SelectableUserCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D168DC9D2A6F9EA400BC3282 /* SelectableUserCellViewModel.swift */; };
 		D178EE362A81DB8000B59D07 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D178EE352A81DB8000B59D07 /* Color.swift */; };
 		D178EE382A81F0CA00B59D07 /* PhotosPickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D178EE372A81F0CA00B59D07 /* PhotosPickerHelper.swift */; };
@@ -92,6 +95,9 @@
 		D143D9492A5204D70091B691 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		D143D9552A52096A0091B691 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		D14B9D122A832E6F008D49E2 /* ProfileRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRowView.swift; sourceTree = "<group>"; };
+		D14D06BF2A8CC12200FFFD01 /* DarkModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeView.swift; sourceTree = "<group>"; };
+		D14D06C12A8CC2B100FFFD01 /* DarkModeOptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkModeOptionsViewModel.swift; sourceTree = "<group>"; };
+		D14D06C72A8CD01D00FFFD01 /* ActiveStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveStatusView.swift; sourceTree = "<group>"; };
 		D168DC9D2A6F9EA400BC3282 /* SelectableUserCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableUserCellViewModel.swift; sourceTree = "<group>"; };
 		D178EE352A81DB8000B59D07 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		D178EE372A81F0CA00B59D07 /* PhotosPickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosPickerHelper.swift; sourceTree = "<group>"; };
@@ -306,6 +312,7 @@
 		D143D92A2A514A2B0091B691 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				D14D06BC2A8CC08600FFFD01 /* Settings */,
 				D1BBA57D2A5DB49D00D86D47 /* Messaging */,
 				D143D92E2A514AEA0091B691 /* Authentication */,
 				D143D9412A51855D0091B691 /* Inbox */,
@@ -416,6 +423,64 @@
 				D143D9552A52096A0091B691 /* AuthService.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		D14D06BC2A8CC08600FFFD01 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D14D06C42A8CCFC000FFFD01 /* ActiveStatus */,
+				D14D06C32A8CCFA500FFFD01 /* DarkMode */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		D14D06BD2A8CC09C00FFFD01 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D14D06BF2A8CC12200FFFD01 /* DarkModeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D14D06BE2A8CC0A200FFFD01 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				D14D06C12A8CC2B100FFFD01 /* DarkModeOptionsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		D14D06C32A8CCFA500FFFD01 /* DarkMode */ = {
+			isa = PBXGroup;
+			children = (
+				D14D06BE2A8CC0A200FFFD01 /* ViewModel */,
+				D14D06BD2A8CC09C00FFFD01 /* View */,
+			);
+			path = DarkMode;
+			sourceTree = "<group>";
+		};
+		D14D06C42A8CCFC000FFFD01 /* ActiveStatus */ = {
+			isa = PBXGroup;
+			children = (
+				D14D06C62A8CCFD700FFFD01 /* ViewModel */,
+				D14D06C52A8CCFD200FFFD01 /* View */,
+			);
+			path = ActiveStatus;
+			sourceTree = "<group>";
+		};
+		D14D06C52A8CCFD200FFFD01 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D14D06C72A8CD01D00FFFD01 /* ActiveStatusView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		D14D06C62A8CCFD700FFFD01 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		D168DC9A2A6F930900BC3282 /* ViewModel */ = {
@@ -657,6 +722,7 @@
 				D178EE3B2A81F69A00B59D07 /* AuthError.swift in Sources */,
 				D1B8BC332A6E4CE500D17E79 /* SelectGroupMembersView.swift in Sources */,
 				D19F04E12A7CA2C5004BD33F /* InboxService.swift in Sources */,
+				D14D06C82A8CD01D00FFFD01 /* ActiveStatusView.swift in Sources */,
 				D168DC9E2A6F9EA500BC3282 /* SelectableUserCellViewModel.swift in Sources */,
 				D178EE382A81F0CA00B59D07 /* PhotosPickerHelper.swift in Sources */,
 				D1BBA57F2A5DB4C000D86D47 /* ChatView.swift in Sources */,
@@ -669,6 +735,7 @@
 				D1C6CAC72A5DD63000E834B0 /* Constants.swift in Sources */,
 				D143D9482A518E340091B691 /* InboxRowView.swift in Sources */,
 				D1B8E4FD2A5D6E3A00B3063B /* UserService.swift in Sources */,
+				D14D06C22A8CC2B100FFFD01 /* DarkModeOptionsViewModel.swift in Sources */,
 				D143D91C2A5149AE0091B691 /* ChatAppApp.swift in Sources */,
 				D1A899222A82152700E27E8F /* MessageInputView.swift in Sources */,
 				D11FCBB92A7E1243007479BA /* Date.swift in Sources */,
@@ -683,6 +750,7 @@
 				D143D9372A5165F50091B691 /* ProfileView.swift in Sources */,
 				D11FCBCC2A818219007479BA /* GroupChatViewModel.swift in Sources */,
 				D1BBA5812A5DB7F300D86D47 /* ChatBubble.swift in Sources */,
+				D14D06C02A8CC12200FFFD01 /* DarkModeView.swift in Sources */,
 				D1433CA22A70DC3200616CB0 /* CreateGroupChatViewModel.swift in Sources */,
 				D1C7C2782A6E771600C9659B /* SelectedGroupMembersView.swift in Sources */,
 				D17A19FC2A78EAC8004DC1F4 /* GroupChatsViewModel.swift in Sources */,
