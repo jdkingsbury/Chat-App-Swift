@@ -49,11 +49,13 @@ struct InboxView: View {
             .navigationDestination(for: Message.self, destination: { message in
                 if let user = message.user {
                     ChatView(user: user)
+                        .navigationBarBackButtonHidden()
                 }
             })
             .navigationDestination(isPresented: $showChat, destination: {
                 if let user = selectedUser {
                     ChatView(user: user)
+                        .navigationBarBackButtonHidden()
                 }
             })
             .navigationDestination(isPresented: $showProfile, destination: {
@@ -62,9 +64,8 @@ struct InboxView: View {
                         .navigationBarBackButtonHidden()
                 }
             })
-
 //            .overlay { if !viewModel.didCompleteInitialLoad { ProgressView() } }
-            .navigationTitle("Chats")
+            .navigationTitle("Messages")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

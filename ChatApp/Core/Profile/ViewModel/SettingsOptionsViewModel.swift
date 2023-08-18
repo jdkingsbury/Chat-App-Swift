@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum SettingsOptionsViewModel: Int, CaseIterable, Identifiable {
+enum SettingsOptionsViewModel: Int, CaseIterable, Identifiable, Hashable {
     case darkMode
     case activeStatus
     case accessibility

@@ -38,8 +38,6 @@ class ChatService {
             }
             
             completion(messages)
-        
-            
         }
     }
     

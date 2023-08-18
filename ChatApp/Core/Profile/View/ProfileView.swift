@@ -50,8 +50,10 @@ struct ProfileView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Image(systemName: "chevron.left")
-                        .imageScale(.large)
+                    Image(systemName: "chevron.left.circle.fill")
+                        .resizable()
+                        .frame(width: 32, height: 32)
+                        .foregroundStyle(Color.theme.primaryText, Color.theme.background)
                         .onTapGesture {
                             Task {
                                 dismiss()
@@ -64,9 +66,15 @@ struct ProfileView: View {
             List {
                 Section {
                     ForEach(SettingsOptionsViewModel.allCases) {viewModel in
-                        ProfileRowView(viewModel: viewModel)
+                        NavigationLink {
+//                            DarkModeView()
+//                                .navigationBarBackButtonHidden()
+                        } label: {
+                            ProfileRowView(viewModel: viewModel)
+                        }
                     }
                 }
+                
                 
                 Section {
                     Button("Sign Out") {
