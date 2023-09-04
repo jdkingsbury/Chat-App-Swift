@@ -17,7 +17,7 @@ struct ProfileView: View {
     }
     
     var body: some View {
-        VStack {
+        NavigationStack {
             // header
             VStack {
                 PhotosPicker(selection: $viewModel.selectedImage) {
@@ -65,10 +65,25 @@ struct ProfileView: View {
             // list
             List {
                 Section {
-                    ForEach(SettingsOptionsViewModel.allCases) {viewModel in
+                    ForEach(SettingsOptionsViewModel.allCases) { viewModel in
                         NavigationLink {
-                            DarkModeView()
-                                .navigationBarBackButtonHidden()
+                            switch viewModel {
+                            case .darkMode:
+                                DarkModeView()
+                                    .navigationBarBackButtonHidden()
+                            case .activeStatus:
+                                DarkModeView()
+                                    .navigationBarBackButtonHidden()
+                            case .accessibility:
+                                DarkModeView()
+                                    .navigationBarBackButtonHidden()
+                            case .privacy:
+                                PrivacyView()
+                                    .navigationBarBackButtonHidden()
+                            case .notifications:
+                                DarkModeView()
+                                    .navigationBarBackButtonHidden()
+                            }
                         } label: {
                             ProfileRowView(viewModel: viewModel)
                         }
@@ -85,20 +100,6 @@ struct ProfileView: View {
                     }
                 }
                 .foregroundColor(.red)
-            }
-            .navigationDestination(for: SettingsOptionsViewModel.self) { setting in
-                switch setting {
-                case .darkMode:
-                    DarkModeView()
-                case .activeStatus:
-                    DarkModeView()
-                case .accessibility:
-                    DarkModeView()
-                case .privacy:
-                    DarkModeView()
-                case .notifications:
-                    DarkModeView()
-                }
             }
         }
     }
