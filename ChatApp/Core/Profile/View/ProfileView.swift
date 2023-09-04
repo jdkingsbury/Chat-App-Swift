@@ -67,8 +67,8 @@ struct ProfileView: View {
                 Section {
                     ForEach(SettingsOptionsViewModel.allCases) {viewModel in
                         NavigationLink {
-//                            DarkModeView()
-//                                .navigationBarBackButtonHidden()
+                            DarkModeView()
+                                .navigationBarBackButtonHidden()
                         } label: {
                             ProfileRowView(viewModel: viewModel)
                         }
@@ -86,8 +86,20 @@ struct ProfileView: View {
                 }
                 .foregroundColor(.red)
             }
-            
-            
+            .navigationDestination(for: SettingsOptionsViewModel.self) { setting in
+                switch setting {
+                case .darkMode:
+                    DarkModeView()
+                case .activeStatus:
+                    DarkModeView()
+                case .accessibility:
+                    DarkModeView()
+                case .privacy:
+                    DarkModeView()
+                case .notifications:
+                    DarkModeView()
+                }
+            }
         }
     }
 }

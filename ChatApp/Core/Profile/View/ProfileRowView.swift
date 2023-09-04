@@ -20,6 +20,7 @@ struct ProfileRowView: View {
             Text(viewModel.title)
                 .font(.subheadline)
         }
+        
     }
 }
 
